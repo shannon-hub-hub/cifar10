@@ -168,7 +168,7 @@ weighted avg       0.81      0.79      0.79     10000
 | ResNet-18 |               78.81 |     11173962 |               20 |
 
 
-ResNet-18 outperformed the baseline CNN by roughly 16.6 points using ~159× more parameters. A similar pattern, moderate but not dramatic gains from ResNet over plain CNNs, has been reported on other small-to-moderate image datasets, including medical imaging tasks [2].
+ResNet-18 outperformed the baseline CNN by roughly 16.6 points using ~159× more parameters. A similar pattern, moderate but not dramatic gains from ResNet over plain CNNs, has been reported on other small-to-moderate image datasets, including medical imaging tasks [1].
 
 
 The baseline CNN here is only 2 conv layers deep, shallow enough that it likely isn't hitting the vanishing-gradient problems that motivate ResNet's skip connections in the first place. A fairer stress test of "does depth need skip connections" would compare a *plain* (non-residual) CNN at ResNet-18's depth against ResNet-18 itself; that comparison would be expected to show a much larger gap, since plain deep networks degrade sharply past a certain depth while residual networks do not.
@@ -204,12 +204,16 @@ capacity (more channels, a third conv layer) for a closer-matched comparison.
 → GPU training to enable faster iteration and longer experiments; weight decay and early stopping for the baseline CNN would also be cheap additions once iteration is faster.
 
 **No adversarial robustness testing was performed** Prior work comparing PGD attacks on ResNet-18 vs. VGG16 found that CNN architecture choice meaningfully affects robustness to small input
-perturbations [1], suggesting this would be a meaningful gap to close.
+perturbations [2], suggesting this would be a meaningful gap to close.
 → Occlusion analysis and adversarial robustness checks (e.g. Lipschitz constant sensitivity to small perturbations).
 
 **Both models trained from random initialization on a relatively small dataset (40,000 training images).**
 → Transfer learning from ImageNet-pretrained  eights would likely improve convergence stability and final accuracy, worth testing as a direct comparison against training from scratch.
 
 **Architecture exploration was limited to CNN vs. ResNet.**
-→ Vision Transformers are a natural next comparison: ViT lacks CNN-style inductive biases (e.g. translation equivariance from convolution), so it tends to underperform ResNets on moderately sized datasets like ImageNet-1K (~1.3M images), but at much larger scale (14M–300M images) its reduced inductive bias becomes an advantage and
-it can outperform ResNets [2]. Worth exploring how this tradeoff plays out on a dataset as small as CIFAR-10.
+→ Vision Transformers are a natural next comparison: ViT lacks CNN-style inductive biases (e.g. translation equivariance from convolution), so it tends to underperform ResNets on moderately sized datasets like ImageNet-1K (~1.3M images), but at much larger scale (14M–300M images) its reduced inductive bias becomes an advantage and it can outperform ResNets [2]. Worth exploring how this tradeoff plays out on a dataset as small as CIFAR-10.
+
+## References
+
+[1] "A Comparative Study of CNN, ResNet, and Vision Transformers for Multi-Classification of Chest Diseases"
+[2] "Comparison of Projected Gradient Descent Attack Effects on ResNet18 and VGG16 Models"
